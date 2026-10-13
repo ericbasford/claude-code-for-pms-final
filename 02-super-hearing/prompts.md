@@ -21,3 +21,9 @@ You've now read both folders. Where do they disagree? What's loud in the intervi
 Distill this information to a more clear visual - it should be easy to understand and focus on responders who collapsed. Pay special attention to the area where there is one over-worked superhero and one who has nothing to do.
 
 ### 3.
+(Note: reply approving two proposed next steps: pull ping trends for Ashgrove and Halfmoon, and add the interview-vs-ticket findings to CLAUDE.md.)
+Yes and yes.
+
+### 4.
+(Note: reply approving the proposed next step: write the "how we decide who gets pinged" doc.)
+Yes, next.
