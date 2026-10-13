@@ -161,3 +161,35 @@ Wiki comments and handoff claims are opinions until checked against data.
   Unknown: where the four sit relative to callouts, and whether misses are
   push-delivery failures. Needs Wen Li and Ravi.
 - **Next:** write the "how we decide who gets pinged" doc Priya asked for.
+
+### Findings so far (session 2: interviews vs. tickets)
+- **Sources:** 4 September interviews (Aunt Dot, Ambrose, Halloran, Kip; designer
+  was researching console redesign, not 4.2) vs. 147 tickets from 12 handlers
+  (29 Jun to 7 Sep). Theme counts are keyword matches on subject lines, approximate.
+- **Sample bias:** Aunt Dot and Kip (Vesper, Meteor Mite, two of the collapsed four)
+  filed **zero tickets**. Only Ambrose is in both sources (1 ticket). Tickets
+  undercount the damage; interviews cover 4 of 15 handlers.
+- **All over tickets, never in interviews:** "quiet / phone hasn't gone off in N
+  days / still on the list?" (32 tickets, 0 before 4.2; titles escalate to "7 days",
+  "first one in 9 days and he missed it"; Farlight and Undertow handlers say the
+  responders themselves asked them to pass it on). "Gone before he could answer"
+  (13, 0 before 4.2). Filters (16, 14 after 4.2; mixed bugs and praise, not pure noise).
+- **Loud in interviews, rare in tickets:** small status-badge text (2 tickets), dark
+  mode (4), distinct alert sounds (2). Real but small; redesign themes.
+- **Interviews corroborate 4.2 only when probed:** the "gone before answer" story
+  (Dot's phone-to-stairs race, Ambrose's half-booted responder, Halloran in passing)
+  matches the 60s wait. Dot and Kip describe the quiet weeks but can't explain them.
+  Neither source says *why* a responder goes quiet.
+- **Ashgrove and Halfmoon** (5 "quiet" tickets each, not in the collapsed four):
+  pings fell ~10-11/wk to ~7-8/wk (about -30%), acceptance ~75-80% to ~55-70%
+  (Halfmoon back to 88% last week, 8 pings). A mild dip, not a collapse. Farlight and
+  Undertow went ~12/wk to 1/wk. Quiet-ticket count is not a reliable proxy for the
+  collapse; use ping data. Possible early or partial version of the same loop; untested.
+- **Next:** still need Ravi (where the four sit vs. callouts, split by change) and
+  Wen Li (are misses delivery failures; does proximity apply equally).
+
+- Kip's two responders, **The Gale and Meteor Mite** (both Eastgate), are the clearest case: after 4.2 The Gale went ~13 to 21 pings/wk (still ~76% yes, misses creeping up) while Meteor Mite went ~11 to 1. Their combined total barely moved (~24 to ~22), so the work shifted, not vanished. Matches Kip's interview ("all the way to one side or the other").
+- Wrote the missing routing doc: `00-rook/company/notes/how-we-decide-who-gets-pinged.md` (draft v1, from code only). It lists six open questions for Wen Li.
+- Biggest open question to ask Wen Li first: `history.py` keeps scores in an in-memory dict. If they reset on deploy or restart, the "never recovers" loop is weaker. Also unknown: whether misses are real or push-delivery failures, and whether Supply reads a quiet responder as a maintenance window.
+- Last full week (31 Aug) the four collapsed responders are at 0 or 1 pings each; yes rate from 17 Aug is 0 to 17%. Still need Ravi's split by weighting vs. 60s timeout.
+- Ticket keyword counts are approximate (subject lines only; bodies not read). Interviews were console-redesign research by the designer, so 4.2 only came up when probed.

@@ -15,7 +15,9 @@ prompt library built from your own questions.
 ---
 
 ### 1.
+You've now read both folders. Where do they disagree? What's loud in the interviews but rare in the tickets, and what's all over the tickets that nobody brought up in the interviews?
 
 ### 2.
+Distill this information to a more clear visual - it should be easy to understand and focus on responders who collapsed. Pay special attention to the area where there is one over-worked superhero and one who has nothing to do.
 
 ### 3.
