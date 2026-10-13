@@ -24,6 +24,12 @@ prompt library built from your own questions.
 
 ### 1.
 
+I'd like to hear more about the actual complaints. Can you review the interviews database and give me some verbatim snippets for "phone never goes off" so I understand?
+
 ### 2.
 
+Could you make a diagram showing me how the nodes in this communication system connect (dispatch to superheroes, etc.) and show all the specific superheroes with their ping rates and acceptance rates, etc.
+
 ### 3.
+
+Now can you develop an explanation of how a Responder gets penalized when they don't pick up immediately? Again, a diagram would help or a graph that shows how response availability affects follow-up calls.
