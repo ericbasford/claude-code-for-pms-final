@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Rook Dispatch 4.3 prototype</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:0;background:#f3f4f6;color:#1f2937}
+header{padding:14px 24px;background:#111827;color:#fff;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+header h1{font-size:16px;margin:0;flex:1}
+.seg button{border:1px solid #6b7280;background:transparent;color:#fff;padding:6px 12px;cursor:pointer}
+.seg button.on{background:#fff;color:#111827}
+main{display:flex;gap:32px;padding:24px;flex-wrap:wrap;justify-content:center}
+.note{max-width:900px;margin:0 auto;padding:0 24px;font-size:13px;color:#4b5563}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;margin:0 0 8px}
+.phone{width:300px;height:560px;border:8px solid #111;border-radius:34px;background:#fff;padding:20px 16px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.phone .who{font-size:12px;color:#6b7280}
+.big{font-size:22px;font-weight:700;margin:12px 0 4px}
+.ring{font-size:56px;font-weight:800;text-align:center;margin:16px 0 0}
+.bar{height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:6px 0 18px}
+.bar i{display:block;height:100%;background:#2563eb;width:100%}
+.btn{display:block;width:100%;padding:14px;border-radius:10px;border:0;font-size:16px;margin-top:10px;cursor:pointer}
+.yes{background:#16a34a;color:#fff}.no{background:#e5e7eb}.pri{background:#2563eb;color:#fff}
+.gone{background:#fef3c7;border-radius:10px;padding:12px;font-size:14px;margin-top:14px}
+.good{background:#dcfce7}
+.muted{color:#6b7280;font-size:13px}
+.tag{display:flex;align-items:center;gap:10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}.tag small{color:#6b7280;font-size:12px}.chk{display:flex;gap:8px;align-items:flex-start;font-size:14px;padding:5px 0}.chk small{color:#b45309;font-size:12px}.tagi{font-size:30px;line-height:1}
+.console{width:560px;background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:16px}
+.cards{display:flex;gap:12px}
+.card{flex:1;border:1px solid #d1d5db;border-radius:8px;padding:12px;font-size:14px}
+.card h3{margin:0 0 6px;font-size:15px}
+.phone.v43{height:660px}
+#tabbar{display:none}
+.phone.v43 #tabbar{display:flex;margin:8px -10px -12px;background:#1b1c1f;border-top:1px solid #000;box-shadow:inset 0 1px 0 rgba(255,255,255,.07);padding:8px 6px 10px}
+.phone.v43.noTabs #tabbar{display:none}
+.phone.v43.noTabs{padding-bottom:12px}
+.tb{flex:1;background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 0;opacity:.62}
+.tb.on{opacity:1}
+.tb svg{width:26px;height:26px;fill:none;stroke:url(#gd2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 0 rgba(255,255,255,.35)) drop-shadow(0 -1px 0 rgba(0,0,0,.9)) drop-shadow(0 2px 2px rgba(0,0,0,.8))}
+.tb span{font:700 11px/1 Georgia,serif;letter-spacing:.05em;background:linear-gradient(180deg,#fff3b8,#e8b43a 50%,#9a6410);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(255,255,255,.3)) drop-shadow(0 -1px 0 rgba(0,0,0,.9)) drop-shadow(0 1px 2px rgba(0,0,0,.8))}
+.tb.on::after{content:"";width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,#9a6410,#fff3b8,#9a6410);margin-top:1px}
+.toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tg{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer}
+.status{font-size:14px;color:#374151;margin:4px 0 8px}
+.sec{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;margin:14px 0 2px}
+.pt{margin-top:2px}.pt th{font-size:11px;color:#6b7280}
+.hcard{border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;border:1px solid #f59e0b;background:#fef3c7}
+.hcard.good{border-color:#86efac;background:#dcfce7}.hcard.info{border-color:#bfdbfe;background:#eff6ff}.hcard.warn{border-color:#fca5a5;background:#fee2e2}
+.hcard h4{margin:0 0 4px;font-size:15px}
+.mini{padding:8px;font-size:14px;border-radius:8px;margin-top:8px}
+.crow{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin:8px 0;font-size:14px}
+.crow button{margin:6px 6px 0 0;padding:6px 10px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;cursor:pointer}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px}
+#hdr{display:none}
+.phone.v43 .dup{display:none}
+.phone.v43 #hdr{display:flex;align-items:center;justify-content:center;gap:10px;margin:-6px 0 7px}
+.logo{width:40px;height:40px;flex:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+.nm{white-space:nowrap;font:800 23px/1 Georgia,'Times New Roman',serif;letter-spacing:.04em;background:linear-gradient(180deg,#fff3b8 0%,#e8b43a 45%,#9a6410 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(255,255,255,.45)) drop-shadow(0 -1px 0 rgba(40,25,0,.8)) drop-shadow(0 3px 3px rgba(0,0,0,.6))}
+#screen>*{flex-shrink:0}
+#screen{flex:1;display:flex;flex-direction:column;min-height:0}
+.phone.v43{padding:22px 10px 12px;background-color:#6b7280;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='560'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035 .05' numOctaves='4' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.75'/%3E%3C/svg%3E"),radial-gradient(circle at 20% 15%,#9ca3af 0 14%,transparent 15%),radial-gradient(circle at 80% 40%,#4b5563 0 18%,transparent 19%),radial-gradient(circle at 30% 85%,#8b93a0 0 16%,transparent 17%);background-blend-mode:multiply,normal,normal,normal}
+.phone.v43 #screen{background:#fff;border-radius:18px;padding:16px;overflow:auto;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.phone.v43 .pri,.phone.v43 .yes{background:#d11a2a;color:#fff;font-weight:700}
+.icon{font-size:22px;line-height:1;vertical-align:middle;margin-right:6px}
+.icon:empty{display:none}
+.spark{margin-top:8px;font-size:12px;color:#6b7280}.spark svg{display:block;width:100%;height:36px}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#e5e7eb}
+.quiet{background:#fef3c7;border:1px solid #f59e0b;border-radius:6px;padding:8px;margin-top:8px;font-size:13px}
+.ctrl{margin-top:14px;font-size:13px}
+.ctrl button{margin:2px 4px 2px 0;padding:6px 10px;cursor:pointer}
+table{border-collapse:collapse;font-size:13px;width:100%;margin-top:10px}td,th{border-bottom:1px solid #e5e7eb;padding:4px 6px;text-align:left}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd2" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="24"><stop offset="0" stop-color="#fff3b8"/><stop offset=".5" stop-color="#e8b43a"/><stop offset="1" stop-color="#9a6410"/></linearGradient></defs></svg>
+<header><h1>Rook Dispatch 4.3 prototype: The Undertow (responder) and Desmond Okafor (handler)</h1>
+<div class="seg"><button id="v42" onclick="setV('42')">Today (4.2)</button><button id="v43" class="on" onclick="setV('43')">With 4.3</button></div></header>
+<p class="note">Fictional scenario; mock data from the Rook database (to 6 Sep). Nothing here maps a cover name to a person. Toggle the version at the top, then tap through the phone and replay the score on the right. Numbers in the score replay are the brief's <em>starting values</em>, not tuned.</p>
+<main>
+<section><h2>Responder's phone</h2>
+<div class="phone" id="phone"><div id="hdr"><svg viewBox="0 0 48 48" class="logo" aria-label="The Undertow emblem"><defs><linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1b0"/><stop offset=".45" stop-color="#e0a82e"/><stop offset="1" stop-color="#8a5a0c"/></linearGradient></defs><circle cx="24" cy="24" r="21" fill="#2b2f36" stroke="url(#gd)" stroke-width="3"/><path d="M8 27c4-7 8-7 12 0s8 7 12 0 6-5 8-3" fill="none" stroke="url(#gd)" stroke-width="3.2" stroke-linecap="round"/><path d="M9 34c4-6 8-6 12 0s8 6 12 0 5-4 7-2.5" fill="none" stroke="url(#gd)" stroke-width="2.6" stroke-linecap="round" opacity=".75"/><path d="M13 19c3-4 7-4 10 0s6 4 10-1" fill="none" stroke="url(#gd)" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg><span class="nm">The Undertow</span></div><div id="screen"></div><div id="tabbar"><button class="tb" id="t-home" onclick="setTab('home')"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button class="tb" id="t-history" onclick="setTab('history')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></button><button class="tb" id="t-contacts" onclick="setTab('contacts')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Contacts</span></button><button class="tb" id="t-settings" onclick="setTab('settings')"><svg viewBox="0 0 24 24"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.5"/><circle cx="8" cy="17" r="2.5"/></svg><span>Settings</span></button></div></div>
+<div class="ctrl"><button onclick="phoneState('home')">Home (no cards)</button><button onclick="phoneState('ping')">New ping</button><button onclick="chk=0;notif=false;phoneState('quiet')">Quiet for a week</button><button onclick="phoneState('back')">After easing</button><button onclick="phoneState('new')">First open (4.3)</button></div></section>
+
+<section><h2>Handler console: coverage cards</h2>
+<div class="console">
+<div id="ban"></div>
+<div class="cards">
+<div class="card"><h3><span class="icon" id="ic-uq"></span>The Undertow <span class="pill">Harborside</span></h3>
+<div>Last 7 days: 1 ping, 1 missed</div><div class="muted">Last yes: 17 Aug</div><div id="sp-uq"></div><div id="uq"></div></div>
+<div class="card"><h3><span class="icon" id="ic-mm"></span>Meteor Mite <span class="pill">Eastgate</span></h3>
+<div>Last 7 days: 1 ping</div><div class="muted">Handler: Kip</div><div id="sp-mm"></div><div id="mm"></div></div>
+</div>
+<h2 style="margin-top:16px">Score replay (the routing score for The Undertow)</h2>
+<div class="muted">Starting at 0.00, no pings. Each tap = one day.</div>
+<div class="ctrl"><button onclick="day()">Next day</button><button onclick="resetS()">Reset</button><button onclick="ping('yes')">Ping: yes</button><button onclick="ping('no')">Ping: turned down</button><button onclick="ping('miss')">Ping: missed</button></div>
+<table><tr><th>Day</th><th>Event</th><th>Score</th></tr><tbody id="log"></tbody></table>
+<p class="muted" id="sumry"></p>
+</div></section>
+</main>
+<script>
+let V='43',score=0,idle=0,d=0;
+const $=id=>document.getElementById(id);
+function setV(v){V=v;$('phone').classList.toggle('v43',v=='43');$('v42').classList.toggle('on',v=='42');$('v43').classList.toggle('on',v=='43');
+ chk=0;if(v=='43'){hs='none';tab='home';home()}else phoneState('ping');resetS();cards()}
+const SC={uq:[0.04,0.04,0.04,0,0,0,0,0,0,0,0,0,0,0],mm:[0.28,0.28,0.28,0.16,0.16,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0,0]};
+function spark(id){const a=SC[id],w=200,h=36,n=a.length-1;
+ const pts=a.map((v,i)=>[(i/n*(w-6)+3).toFixed(1),(h-3-v*(h-6)).toFixed(1)]);
+ const l=pts[n];return `<div class="spark">Score, 24 Aug to 6 Sep: <b>${a[0].toFixed(2)} to ${a[n].toFixed(2)}</b>
+ <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="0" x2="${w}" y1="${h-3-.5*(h-6)}" y2="${h-3-.5*(h-6)}" stroke="#d1d5db" stroke-dasharray="3 3"/>
+ <polyline fill="none" stroke="#b45309" stroke-width="2" points="${pts.map(p=>p.join(',')).join(' ')}"/><circle cx="${l[0]}" cy="${l[1]}" r="3" fill="#b45309"/></svg>
+ <span>Dashed line = neutral (0.50). Modelled from pings, not stored.</span></div>`}
+function cards(){
+ $('ban').innerHTML=V=='43'?`<div class="quiet" style="margin:0 0 12px"><b>4.3: ping wait is back to 90 seconds.</b> Misses now cost a responder less, and a new Quiet tag shows who hasn't been pinged lately. You still can't change routing from here. <a href="#" onclick="this.parentNode.remove();return false">Dismiss</a></div>`:'';
+ $('sp-uq').innerHTML=V=='43'?spark('uq'):'';$('sp-mm').innerHTML=V=='43'?spark('mm'):'';
+ $('ic-uq').textContent=V=='43'?'🌊':'';$('ic-mm').textContent=V=='43'?'☄️':'';
+ $('uq').innerHTML=V=='43'?'<div class="quiet"><b>Quiet: 9 days without a ping.</b><br>Last 4 pings missed; ranked low since. Worth asking if their phone is receiving. Read-only: routing is not changed from here.</div>':'';
+ $('mm').innerHTML=V=='43'?'<div class="quiet"><b>Quiet: 6 days without a ping.</b><br>Last ping missed.</div>':'';
+}
+let t=null;
+function phoneState(s){
+ clearInterval(t);const p=$('screen');const wait=V=='43'?90:60;
+ if(V!='43'&&s=='home')s='ping';
+ $('phone').classList.toggle('noTabs',s=='ping');
+ if(V=='43'&&(s=='quiet'||s=='back'||s=='new'||s=='home')){hs=s=='home'?'none':s;home();return}
+ if(s=='ping'){let left=wait;
+  p.innerHTML=`<div class="who dup">The Undertow</div><div class="big">Callout: Harborside</div>${V=='43'?`<div class="tag"><span class="tagi">🚪</span><span><b>Structural-entry</b><br><small>Needed for this callout</small></span></div><div class="muted">6 min away</div>`:`<div class="muted">Structural-entry needed. 6 min away.</div>`}<div class="ring" id="r">${left}s</div><div class="bar"><i id="b"></i></div>
+  <button class="btn yes" onclick="ans('yes')">Take it</button><button class="btn no" onclick="ans('no')">Turn down</button><div class="muted" style="margin-top:12px">Ping wait: ${wait}s. (Click nothing for 8s and it fast-forwards to the last second.)</div>`;
+  let idleT=0;
+  t=setInterval(()=>{idleT++;if(idleT==8)left=wait>20?5:left;left--;
+   if(!$('r')){clearInterval(t);return}$('r').textContent=left+'s';$('b').style.width=(left/wait*100)+'%';
+   if(left<=0){clearInterval(t);ans('miss')}},1000);
+ }
+ if(s=='quiet'){if(V=='43'){quiet43();return}p.innerHTML=`<div class="who dup">The Undertow</div><div class="big">Nothing yet</div><div class="muted" style="margin-top:12px">(Empty. No explanation.)</div>`}
+ if(s=='new'){p.innerHTML=V=='43'?`<div class="who">Rook Dispatch 4.3</div><div class="big">What's new</div>
+  <div class="chk ok"><span>⏱️</span><span><b>You get 90 seconds again</b><br><small>We cut it to 60 in 4.2. That was too short.</small></span></div>
+  <div class="chk ok"><span>🤝</span><span><b>Missing a ping counts for less</b><br><small>Turning one down works as before.</small></span></div>
+  <div class="chk ok"><span>📶</span><span><b>Not getting pings?</b><br><small>Tap "Am I connected?" to check your phone and notifications.</small></span></div>
+  <button class="btn pri" onclick="phoneState('ping')">Got it</button>`:`<div class="muted">4.2 has no What's new card.</div>`;return}
+ if(s=='back'){p.innerHTML=`<div class="who dup">The Undertow</div><div class="big">Back in rotation</div><div class="gone good">You're being offered Harborside callouts again. Each ping stays live for ${wait} seconds.</div>`}
+}
+let chk=0,notif=true,hs='none',tab='home',avail=true;
+function quiet43(){const p=$('screen');
+ const row=(ok,t,sub)=>`<div class="chk ${ok?'ok':'bad'}"><span>${ok?'✅':'⚠️'}</span><span><b>${t}</b>${sub?`<br><small>${sub}</small>`:''}</span></div>`;
+ let body=`<div class="gone">No pings for 9 days. Pings are ranked by closeness and recent answers, and yours is being eased back up. First, let's make sure your phone can hear us.</div>`;
+ if(!chk)body+=`<button class="btn pri" onclick="chk=1;quiet43()">Am I connected?</button>`;
+ else{body+=`<div class="muted" style="margin-top:10px">Checked just now</div>`+row(1,'Phone online')+row(1,'Reaching Rook')+row(1,'Marked available')
+  +(notif?row(1,'Notifications on'):row(0,'Notifications are off','Pings can\'t buzz your phone.'));
+  if(!notif)body+=`<button class="btn yes" onclick="notif=true;quiet43()">Turn on notifications</button><div class="muted" style="margin-top:6px">On a real phone this opens your system settings.</div>`;
+  else body+=`<div class="gone good"><b>You're set.</b> You'll hear the next ping.</div>`;}
+ p.innerHTML=`<div class="who dup">The Undertow</div><div class="big">Nothing yet</div>`+body}
+
+const OUT={taken:['✅','Taken'],missed:['⚠️','Missed'],no:['✖️','Turned down']};
+const RECENT=[['5 Sep','#41394','missed'],['27 Aug','#41235','missed'],['21 Aug','#41130','missed']];
+const HIST=[['5 Sep','#41394','missed'],['27 Aug','#41235','missed'],['21 Aug','#41130','missed'],['18 Aug','#41079','missed'],['17 Aug','#41059','taken'],['17 Aug','#41054','no'],['16 Aug','Harborside','no'],['14 Aug','Harborside','missed']];
+function ptable(rows){return '<table class="pt"><tr><th>When</th><th>Callout</th><th>Outcome</th></tr>'+rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${OUT[r[2]][0]} ${OUT[r[2]][1]}</td></tr>`).join('')+'</table>'}
+function chkrow(ok,t,sub){return `<div class="chk ${ok?'ok':'bad'}"><span>${ok?'✅':'⚠️'}</span><span><b>${t}</b>${sub?`<br><small>${sub}</small>`:''}</span></div>`}
+function homeCard(){
+ if(hs=='quiet'){let b=`<div class="hcard"><h4>No pings for 9 days</h4>Pings are ranked by closeness and recent answers, and yours is being eased back up. First, let's make sure your phone can hear us.`;
+  if(!chk)b+=`<button class="btn pri mini" onclick="chk=1;home()">Am I connected?</button>`;
+  else{b+=`<div class="muted" style="margin-top:8px">Checked just now</div>`+chkrow(1,'Phone online')+chkrow(1,'Reaching Rook')+chkrow(avail,'Marked available',avail?'':'Turn Available on above.')+(notif?chkrow(1,'Notifications on'):chkrow(0,'Notifications are off','Pings can\'t buzz your phone.'));
+   if(!notif)b+=`<button class="btn yes mini" onclick="notif=true;home()">Turn on notifications</button><div class="muted" style="margin-top:4px">On a real phone this opens your system settings.</div>`;
+   else if(avail)b+=`<div class="gone good" style="margin-top:8px"><b>You're set.</b> You'll hear the next ping.</div>`}
+  return b+'</div>'}
+ if(hs=='new')return `<div class="hcard info"><h4>What's new in 4.3</h4>
+  <div class="chk ok"><span>⏱️</span><span><b>You get 90 seconds again</b><br><small>We cut it to 60 in 4.2. That was too short.</small></span></div>
+  <div class="chk ok"><span>🤝</span><span><b>Missing a ping counts for less</b><br><small>Turning one down works as before.</small></span></div>
+  <div class="chk ok"><span>📶</span><span><b>Not getting pings?</b><br><small>Home will check your phone and notifications for you.</small></span></div>
+  <button class="btn pri mini" onclick="hs='none';home()">Got it</button></div>`;
+ if(hs=='back')return `<div class="hcard good"><h4>You're back in rotation</h4>Your first ping in 9 days arrived today. You're being offered Harborside callouts again. Each ping stays live for 90 seconds.</div>`;
+ return ''}
+function home(){tab='home';$('phone').classList.remove('noTabs');
+ const st=!avail?`<div class="hcard warn"><b>You're set to unavailable.</b> You won't be pinged until you switch back.</div>`:hs=='none'?`<div class="status">No active pings. You're on the list for Harborside callouts.</div>`:'';
+ const nw=(!notif&&hs!='quiet')?`<div class="hcard warn"><b>Notifications are off.</b> Pings can't buzz your phone. <a href="#" onclick="setTab('settings');return false">Fix in Settings</a></div>`:'';
+ const rows=hs=='back'?[['Today','Harborside','taken']].concat(RECENT.slice(0,2)):RECENT;
+ $('screen').innerHTML=`<div class="toprow"><div class="big" style="margin:0">Home</div><label class="tg"><input type="checkbox" ${avail?'checked':''} onchange="avail=this.checked;home()">${avail?'Available':'Unavailable'}</label></div>`+st+nw+homeCard()+`<div class="sec">Recent pings</div>`+ptable(rows)+`<button class="btn no mini" onclick="phoneState('ping')">Send me a test ping</button>`;
+ mark()}
+function mark(){['home','history','contacts','settings'].forEach(n=>$('t-'+n).classList.toggle('on',n==tab))}
+function setTab(n){tab=n;$('phone').classList.remove('noTabs');
+ if(n=='home'){home();return}
+ const p=$('screen');
+ if(n=='history')p.innerHTML=`<div class="big" style="margin:0 0 6px">History</div><div class="muted">Your latest pings, newest first. In 4.3 a miss counts for less than a turn-down.</div>`+ptable(HIST);
+ if(n=='contacts')p.innerHTML=`<div class="big" style="margin:0 0 6px">Contacts</div><div class="crow"><b>Desmond Okafor</b><br><span class="muted">Your handler</span><br><button onclick="this.textContent='Calling…'">Call</button><button onclick="this.textContent='Opening…'">Message</button></div><div class="crow"><b>Rook support</b><br><span class="muted">Not getting pings? Tell us.</span><br><button onclick="this.textContent='Opening…'">Message</button></div>`;
+ if(n=='settings')p.innerHTML=`<div class="big" style="margin:0 0 6px">Settings</div><div class="srow"><span>Notifications</span><label class="tg"><input type="checkbox" ${notif?'checked':''} onchange="notif=this.checked;setTab('settings')">${notif?'On':'Off'}</label></div><div class="srow"><span>Available for callouts</span><label class="tg"><input type="checkbox" ${avail?'checked':''} onchange="avail=this.checked;setTab('settings')">${avail?'On':'Off'}</label></div><div class="srow"><span>Ping wait</span><span>90 seconds</span></div><div class="muted" style="margin-top:6px">Ping wait is the same for everyone and set by Rook.</div><div class="srow"><span>Cover name</span><span>The Undertow</span></div><div class="muted" style="margin-top:6px">Rook holds no link between a cover name and a real identity.</div>`;
+ mark()}
+function ans(a){clearInterval(t);const p=$('screen');$('phone').classList.add('noTabs');
+ if(a=='yes')p.innerHTML=`<div class="big">It's yours.</div><div class="gone good">Callout accepted. Details sent.</div><button class="btn pri" onclick="phoneState('ping')">Replay</button>${V=='43'?`<button class="btn no" onclick="home()">Back to Home</button>`:''}`;
+ if(a=='no')p.innerHTML=`<div class="big">Turned down.</div><div class="gone">Moves to the next responder.${V=='43'?' This counts against your score as before.':''}</div><button class="btn pri" onclick="phoneState('ping')">Replay</button>${V=='43'?`<button class="btn no" onclick="home()">Back to Home</button>`:''}`;
+ if(a=='miss')p.innerHTML=`<div class="big">Gone.</div><div class="gone">${V=='43'?'It went to another responder while you were on your way to the phone. <b>Small mark only, and it eases off by itself.</b>':'Callout withdrawn.'}</div><button class="btn pri" onclick="phoneState('ping')">Replay</button>${V=='43'?`<button class="btn no" onclick="home()">Back to Home</button>`:''}`}
+// score replay
+const P=()=>V=='43'?{miss:.04,no:.12,yes:.08,ease:.07,after:3}:{miss:.12,no:.12,yes:.08,ease:0,after:99999};
+function row(e){const tr=document.createElement('tr');tr.innerHTML=`<td>${d}</td><td>${e}</td><td>${score.toFixed(2)}</td>`;$('log').prepend(tr);
+ $('sumry').textContent=V=='43'?'With 4.3: misses cost 0.04 and idle scores ease +0.07/day after 3 quiet days. From 0.00 it takes about 10 days to reach neutral.':'On 4.2: scores never recover without pings. From 0.00 you need seven straight yeses to reach 0.50, but a low score means you are rarely pinged.'}
+function day(){d++;idle++;const p=P();let e='no ping';if(idle>p.after&&score<.5){score=Math.min(.5,score+p.ease);e='eased toward 0.5'}row(e)}
+function ping(k){d=d;const p=P();idle=0;score=Math.max(0,Math.min(1,score+(k=='yes'?p.yes:-p[k=='no'?'no':'miss'])));row(k=='yes'?'yes':k=='no'?'turned down':'missed')}
+function resetS(){score=0;idle=0;d=0;$('log').innerHTML='';row('start')}
+setV('43');
+</script></body></html>
