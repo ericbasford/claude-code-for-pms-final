@@ -14,7 +14,9 @@ prompt library built from your own questions.
 ---
 
 ### 1.
+/review-checklist https://github.com/MLevin0526/claude-code-for-pms-final/blob/main/05-super-speed/brief.md
 
 ### 2.
+Schedule review-checklist to run every Monday morning, and let me know what it finds. Nothing needs to be ready for it to fire today. I'm setting the habit, not waiting on the result.
 
 ### 3.
